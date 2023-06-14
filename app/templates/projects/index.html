@@ -1,0 +1,59 @@
+<div>
+	<h2>Projects</h2>
+	<form class="stacks">
+		<label>
+			<input
+				type="radio"
+				name="stack"
+				value="all"
+				hx-trigger="change"
+				hx-get="/projects"
+				hx-target=".projectCardList"
+				hx-swap="outerHTML"
+				checked
+			/>All</label
+		>
+		<label
+			><input
+				type="radio"
+				name="stack"
+				value="backend"
+				hx-trigger="change"
+				hx-get="/projects"
+				hx-target=".projectCardList"
+				hx-swap="outerHTML"
+			/>Backend</label
+		>
+		<label
+			><input
+				type="radio"
+				name="stack"
+				value="frontend"
+				hx-trigger="change"
+				hx-get="/projects"
+				hx-target=".projectCardList"
+				hx-swap="outerHTML"
+			/>Frontend</label
+		>
+		<label
+			><input
+				type="radio"
+				name="stack"
+				value="fullstack"
+				hx-trigger="change"
+				hx-get="/projects"
+				hx-target=".projectCardList"
+				hx-swap="outerHTML"
+			/>Fullstack</label
+		>
+	</form>
+
+	<div
+		hx-trigger="load"
+		hx-get="/projects"
+		hx-target=".projectCardList"
+		hx-swap="outerHTML"
+	>
+		{% include "projects/projectCardList.html" %}
+	</div>
+</div>

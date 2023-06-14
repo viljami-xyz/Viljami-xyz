@@ -1,49 +1,11 @@
 {% extends "_layout.html" %} {% block home %}
 <div class="home">
 	<h1>Python Automation Developer</h1>
-	<div class="content">
-		<p>
-			Experienced Python developer, who's main goals have been reducing the
-			amount of mundane tasks that people have to do. Solutions vary from Excel
-			data handling to web scraping and network automation.
-		</p>
-	</div>
-	<div class="content">
-		<h2>Skillset</h2>
-		<h3>Python</h3>
-		<ul>
-			<li>PySide - Creating quick native apps for scripts</li>
-			<li>
-				Pandas - Handling user input sheet data and adjusting it for valid
-				output
-			</li>
-			<li>FastAPI - Hosting automation backend services for larger apps</li>
-			<li>Pytest - Well.. uhh, testing</li>
-		</ul>
-		<!-- <p></p>
-		<ul>
-			<li></li>
-		</ul> -->
-	</div>
-	<div class="content">
-		<h2>Projects</h2>
-		<h3>Finished</h3>
-		<p>-</p>
-		<h3>In Progress</h3>
-		<p>-</p>
-		<h3>TBD</h3>
-		<p>-</p>
-	</div>
-	<div class="content">
-		<h2>Links</h2>
-		<div class="links">
-			<a href="https://www.github.com/vkilkkila" target="_blank">Github</a>
-			<a href="https://www.linkedin.com/in/viljami-kilkkila/" target="_blank"
-				>LinkedIn</a
-			>
-			<a href="https://www.twitter.com/vkilkkila" target="_blank">Twitter</a>
-		</div>
-	</div>
+	<div class="content">{% include "about.html" %}</div>
+	<div class="content">{% include "skillset.html" %}</div>
+	<div class="content">{% include "projects/index.html" %}</div>
+	<div class="content">{% include "contacts.html" %}</div>
+	<footer></footer>
 </div>
 
 {% endblock %}

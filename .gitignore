@@ -24,9 +24,6 @@ env/
 *.log
 *.sqlite3
 
-# Docker
-Dockerfile
-docker-compose.yml
 
 # Build files
 dist/

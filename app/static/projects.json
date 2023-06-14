@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Hintaopasapi",
+        "description": "API used to fetch prices from finnish shops",
+        "link": "https://github.com/vkilkkila/hintaseuraaja-api",
+        "stack": "backend"
+    },
+    {
+        "name": "NomsaApp",
+        "description": "Application for tracking books, thoughts and growth",
+        "link": "https://github.com/vkilkkila/nomsa-htmx",
+        "stack": "fullstack"
+    },
+    {
+        "name": "Oulu-traffic",
+        "description": "Shows recent travelers in Oulu area",
+        "link": "https://github.com/vkilkkila/Oulu-traffic",
+        "stack": "frontend"
+    }
+]
