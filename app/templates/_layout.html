@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>Viljami-xyz</title>
 
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto+Mono:wght@300;400&display=swap"
-			rel="stylesheet"
-		/>
+<head>
+	<meta charset="UTF-8" />
+	<title>Viljami-xyz</title>
 
-		<link rel="stylesheet" href="/app/static/css/site.css" />
-	</head>
-	<body>
-		{% block home %} {% endblock %}
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto+Mono:wght@300;400&display=swap"
+		rel="stylesheet" />
 
-		<script src="/app/static/js/htmx.min.js?v=1.9.2"></script>
-		<script
-			defer
-			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-		></script>
-	</body>
+	<link rel="stylesheet" href="/app/static/css/site.css" />
+	<link rel="stylesheet" href="/app/static/css/tail.css" />
+</head>
+
+<body>
+	{% block home %} {% endblock %}
+
+	<script src="/app/static/js/htmx.min.js?v=1.9.2"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+
 </html>

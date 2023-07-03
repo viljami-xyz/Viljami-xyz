@@ -1,6 +1,20 @@
 {% block projectCard %}
-<div class="projectCard">
-	<a href="{{ project.url }}">{{ project.name }}</a>
-	<p>{{ project.description }}</p>
+<div class="
+	p-3
+	m-2
+	flex
+	flex-col
+	items-center
+	justify-center
+	border-white border-2
+	text-xs
+	w-auto
+	h-36">
+	<div class="mb-auto text-lg hover:underline">
+		<a href="{{ project.html_url }}" target="_blank">{{ project.name }}</a>
+	</div>
+	<p class="text-sm">{{ project.tldr }}</p>
+	<p class="text-sm">Commits: {{project.commits}}</p>
+	<p class="text-sm">Latest update: {{project.update_time}}</p>
 </div>
 {% endblock %}
