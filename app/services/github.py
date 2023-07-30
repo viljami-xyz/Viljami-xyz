@@ -1,10 +1,10 @@
 """ Test the GitHub API """
 
 import base64
-from typing import List, Dict, Any
-import time
 import json
 import pathlib
+import time
+from typing import Any, Dict, List
 
 import requests
 
@@ -18,7 +18,7 @@ saved_repos = pathlib.Path("app/static/repositories.json")
 class GithubRepos:
     """Fetch repositories from GitHub"""
 
-    owner = "vkilkkila"
+    owner = "viljami-xyz"
     access_token = settings.github_api_key
     timestamp = time.time()
 
@@ -39,7 +39,7 @@ class GithubRepos:
             url = self.base_url + endpoint
 
         response = requests.request(
-            method, url, headers=headers, params=params, json=data
+            method, url, headers=headers, params=params, json=data, timeout=5
         )
 
         return response.json()

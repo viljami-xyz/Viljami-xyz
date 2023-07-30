@@ -1,9 +1,14 @@
 {% extends "_layout.html" %} {% block home %}
-<div class="home">
-	<h1>Python Automation Developer</h1>
+<div class="flex flex-col h-full items-center">
+	<h1 class="text-3xl mb-5">Python Automation Developer</h1>
 	<div class="content">{% include "about.html" %}</div>
+	<h2 class="text-xl mb-5">Skillset</h2>
 	<div class="content">{% include "skillset.html" %}</div>
+	<h2 class="text-xl mb-5">Projects</h2>
 	<div class="content">{% include "projects/index.html" %}</div>
+	<h2 class="text-xl mb-5">Reading</h2>
+	<div class="content">{% include "books/index.html" %}</div>
+	<h2 class="text-xl mb-5">Links</h2>
 	<div class="content">{% include "contacts.html" %}</div>
 </div>
 

@@ -1,0 +1,12 @@
+<div class="flex flex-wrap flex-row justify-center">
+    {% for book in books %}
+    <div>
+        <form>
+            <img src="{{ book.cover }}" alt="{{ book.title }}" class="cursor-pointer" hx-post="/books/show"
+                hx-target="#bookInfo" hx-trigger="mouseenter" />
+            <input type="hidden" name="book_title" value="{{ book.title }}" />
+            <input type="hidden" name="book_author" value="{{ book.author }}" />
+        </form>
+    </div>
+    {% endfor %}
+</div>

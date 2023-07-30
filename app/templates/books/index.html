@@ -1,0 +1,9 @@
+<div hx-trigger="load" hx-get="/books" hx-target=".booksCardList" hx-swap="innerHTML">
+    <div id="bookInfo" class="h-10"></div>
+    <div class="booksCardList">
+        {% include "books/booksList.html" %}
+    </div>
+    <p>You can find all my readings <a class="underline text-blue-500"
+            href="https://www.goodreads.com/review/list/168386063" target="_blank">here</a>
+    </p>
+</div>
