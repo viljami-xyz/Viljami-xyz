@@ -34,8 +34,8 @@ class GoodReadsBooks:
         """Fetch books from Goodreads
         # ? Note that this only returns latest 30 added books
         """
-        if not self.fetch_interval and saved_books.exists():
-            return self.load_books_in_ball
+        # if not self.fetch_interval and saved_books.exists():
+        return self.load_books_in_ball
         my_books = []
         async with ClientSession() as client:
             async with client.get(URL) as request:

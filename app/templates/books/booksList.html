@@ -1,6 +1,7 @@
-<div class="flex flex-wrap flex-row justify-center">
+<div class="flex flex-wrap md:flex-row  justify-center ">
     {% for book_nest in books %}
-    <div class="{% if loop.index % 2 == 1 %} mt-auto pt-4 {% else %} mb-auto pb-4 {% endif %} flex flex-col">
+    <div
+        class="{% if loop.index % 2 == 1 %} mt-auto xl:pt-4 {% else %} mb-auto xl:pb-4 {% endif %} flex lg:flex-row xl:flex-col">
         {% for book in book_nest %}
         <form class="">
             <img src="{{ book.cover }}" alt="{{ book.title }}"
