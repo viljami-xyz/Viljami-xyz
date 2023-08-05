@@ -14,6 +14,7 @@ from app.db.handler import (
 from app.db.models import ApiName, Repositories
 from app.services.github import get_repository_data
 from app.services.goodreads import GoodReadsBooks
+from app.services.models import repo_from_orm
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -34,10 +35,10 @@ def home(request: Request):
 async def get_projects(request: Request, lang: str = None):
     """print projects"""
     req_projects = await get_repositories()
-    req_projects = [project.__dict__ for project in req_projects]
+    req_projects = [repo_from_orm(project) for project in req_projects]
     if lang and lang != "all":
         req_projects = [
-            project for project in req_projects if lang in project["languages"].keys()
+            project for project in req_projects if lang in project.languages.keys()
         ]
     return templates.TemplateResponse(
         "projects/projectCardList.html", {"request": request, "projects": req_projects}
@@ -58,10 +59,10 @@ async def projects_preload():
 async def projects_firstload(request: Request, lang: str = None):
     """print projects"""
     req_projects = await get_repositories()
-    req_projects = [project.__dict__ for project in req_projects]
+    req_projects = [repo_from_orm(project) for project in req_projects]
     if lang and lang != "all":
         req_projects = [
-            project for project in req_projects if lang in project["languages"].keys()
+            project for project in req_projects if lang in project.languages.keys()
         ]
 
     return templates.TemplateResponse(

@@ -2,13 +2,13 @@
 	<form class="flex justify-center gap-x-1.5">
 		<label>
 			<input type="radio" name="lang" value="all" hx-trigger="change" hx-get="/projects"
-				hx-target=".projectCardList" hx-swap="outerHTML" checked />All</label>
+				hx-target="#projectCardList" hx-swap="outerHTML" checked />All</label>
 		<label><input type="radio" name="lang" value="Python" hx-trigger="change" hx-get="/projects"
-				hx-target=".projectCardList" hx-swap="outerHTML" />Python</label>
+				hx-target="#projectCardList" hx-swap="outerHTML" />Python</label>
 		<label><input type="radio" name="lang" value="JavaScript" hx-trigger="change" hx-get="/projects"
-				hx-target=".projectCardList" hx-swap="outerHTML" />JavaScript</label>
+				hx-target="#projectCardList" hx-swap="outerHTML" />JavaScript</label>
 		<label><input type="radio" name="lang" value="HTML" hx-trigger="change" hx-get="/projects"
-				hx-target=".projectCardList" hx-swap="outerHTML" />HTML</label>
+				hx-target="#projectCardList" hx-swap="outerHTML" />HTML</label>
 	</form>
 
 	<div hx-get="/projects" hx-trigger="load" hx-swap="none">

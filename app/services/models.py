@@ -1,9 +1,11 @@
 """ Service Models """
 
+import json
 from datetime import date as Date
 from typing import Optional
 
 from pydantic import BaseModel
+from sqlalchemy.orm import DeclarativeMeta
 
 
 class BookCard(BaseModel):
@@ -22,10 +24,22 @@ class RepositoryCard(BaseModel):
     name: str
     readme: str
     tldr: str
-    languages: str
+    languages: str | dict
     commits: int
     html_url: str
     update_time: Date
+
+    class Config:
+        """Configure ORM mode"""
+
+        orm_mode = True
+
+
+def repo_from_orm(sql_instance: DeclarativeMeta) -> RepositoryCard:
+    """Convert ORM object to Pydantic object"""
+    repo = RepositoryCard.from_orm(sql_instance)
+    repo.languages = json.loads(repo.languages)
+    return repo
 
 
 class JobCard(BaseModel):
