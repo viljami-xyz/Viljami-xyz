@@ -1,5 +1,6 @@
-<div hx-trigger="load" hx-get="/books" hx-target="#booksCardList" hx-swap="innerHTML">
-    <div id="bookInfo" class="h-10"></div>
+<div class="flex flex-col justify-center text-center" hx-trigger="load" hx-get="/books" hx-target="#booksCardList"
+    hx-swap="innerHTML">
+    <div id="bookInfo" class="h-16"></div>
     <div id="booksCardList">
         {% include "books/booksList.html" %}
     </div>

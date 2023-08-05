@@ -1,5 +1,5 @@
-<div hx-trigger="load" hx-get="/projects/first-load" hx-target=".projectCardList" hx-swap="outerHTML">
-	<form class="stacks">
+<div hx-trigger="load" hx-get="/projects/first-load" hx-target="#projectCardList" hx-swap="outerHTML">
+	<form class="flex justify-center gap-x-1.5">
 		<label>
 			<input type="radio" name="lang" value="all" hx-trigger="change" hx-get="/projects"
 				hx-target=".projectCardList" hx-swap="outerHTML" checked />All</label>

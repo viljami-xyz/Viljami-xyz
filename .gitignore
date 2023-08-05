@@ -13,8 +13,6 @@ env/
 .idea/
 *.swp
 
-# Environment
-.env
 
 # Dependencies
 /.venv

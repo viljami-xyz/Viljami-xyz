@@ -1,7 +1,10 @@
 {% block projectCard %}
-<div
-	class="p-3 m-2 flex flex-col items-center justify-center border-white border-2 text-xs lg:w-auto lg:h-36 md:h-24 md:w-40">
-	<div class="mb-auto lg:text-lg hover:underline md:text-sm">
+<div class="p-3 m-2 flex flex-col items-center justify-center border-white border-2 text-xs 
+	lg:w-auto lg:h-36 
+	md:h-24 md:w-40">
+	<div class="mb-auto hover:underline 
+	lg:text-lg
+	md:text-sm">
 		<a href="{{ project.html_url }}" target="_blank">{{ project.name }}</a>
 	</div>
 	<p class="lg:text-sm text-xs">{{ project.tldr }}</p>

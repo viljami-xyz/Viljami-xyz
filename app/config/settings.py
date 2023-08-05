@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     app_name: str = "FastAPI"
     github_api_key: str
 
+    testuser: str
+    testpass: str
+    testdb: str
+
     class Config:
         """
         Configuration for environment settings

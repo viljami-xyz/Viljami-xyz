@@ -4,12 +4,19 @@ from fastapi import FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.services.github import GithubRepos
+from app.db.handler import (
+    create_db_and_tables,
+    get_repositories,
+    requires_update,
+    set_updated,
+    update_table,
+)
+from app.db.models import ApiName, Repositories
+from app.services.github import get_repository_data
 from app.services.goodreads import GoodReadsBooks
 
 templates = Jinja2Templates(directory="app/templates")
 
-repo_loader = GithubRepos()
 books_loader = GoodReadsBooks()
 
 app = FastAPI()
@@ -26,7 +33,8 @@ def home(request: Request):
 @app.get("/projects")
 async def get_projects(request: Request, lang: str = None):
     """print projects"""
-    req_projects = repo_loader.repository_data
+    req_projects = await get_repositories()
+    req_projects = [project.__dict__ for project in req_projects]
     if lang and lang != "all":
         req_projects = [
             project for project in req_projects if lang in project["languages"].keys()
@@ -39,18 +47,23 @@ async def get_projects(request: Request, lang: str = None):
 @app.get("/projects/pre-load")
 async def projects_preload():
     """preload projects"""
-    _ = repo_loader.repository_data
+    if await requires_update(ApiName.REPOSITORIES):
+        repos = get_repository_data()
+        await update_table(repos, Repositories)
+        await set_updated(ApiName.REPOSITORIES)
     return None
 
 
 @app.get("/projects/first-load")
 async def projects_firstload(request: Request, lang: str = None):
     """print projects"""
-    req_projects = repo_loader.load_repositories
+    req_projects = await get_repositories()
+    req_projects = [project.__dict__ for project in req_projects]
     if lang and lang != "all":
         req_projects = [
             project for project in req_projects if lang in project["languages"].keys()
         ]
+
     return templates.TemplateResponse(
         "projects/projectCardList.html", {"request": request, "projects": req_projects}
     )
@@ -75,3 +88,9 @@ async def show_book(
         "books/show.html",
         {"request": request, "title": book_title, "author": book_author},
     )
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Create database and tables"""
+    await create_db_and_tables()
