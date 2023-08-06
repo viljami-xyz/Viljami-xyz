@@ -11,7 +11,8 @@ class Settings(BaseSettings):
 
     testuser: str
     testpass: str
-    testdb: str
+    sync_db: str
+    async_db: str
 
     class Config:
         """

@@ -62,9 +62,11 @@ class Books(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String, nullable=False)
     author = Column(String, nullable=False)
+    cover_image = Column(String, nullable=False)
     read_state = Column(Boolean, default=False)
     review = Column(String, nullable=True)
     rating = Column(Integer, nullable=True)
+    date_added = Column(String, nullable=False)
 
 
 class Jobs(Base):

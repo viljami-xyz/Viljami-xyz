@@ -4,8 +4,9 @@ import datetime
 from typing import List
 
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import create_engine, select
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.config.settings import Settings
 from app.db.models import (
@@ -21,25 +22,44 @@ from app.db.models import (
 
 settings = Settings()
 
-engine = create_async_engine(settings.testdb)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+async_engine = create_async_engine(settings.async_db)
+engine = create_engine(settings.sync_db)
+
+async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
+session_maker = sessionmaker(engine, expire_on_commit=False)
 
 UPDATE_INTERVAL = datetime.timedelta(hours=1)
 
 
-async def create_db_and_tables():
+def create_db_and_tables():
     """Create database and tables"""
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    Base.metadata.create_all(engine)
 
 
-async def requires_update(api_name: ApiName) -> bool:
-    """Get last updated time for a given api"""
+def set_updated(api_name: ApiName) -> None:
+    """Set last updated time for a given api"""
     utcnow = datetime.datetime.utcnow()
-    async with async_session_maker() as session:
+
+    with session_maker() as session:
         stmt = select(UpdateStatus).where(UpdateStatus.api_name == api_name)
 
-        result = await session.execute(stmt)
+        result = session.execute(stmt)
+        update = result.scalars().first()
+        if not update:
+            update = UpdateStatus(api_name=api_name, last_updated=utcnow)
+            session.add(update)
+        else:
+            update.last_updated = utcnow
+        session.commit()
+
+
+def requires_update(api_name: ApiName) -> bool:
+    """Get last updated time for a given api"""
+    utcnow = datetime.datetime.utcnow()
+    with session_maker() as session:
+        stmt = select(UpdateStatus).where(UpdateStatus.api_name == api_name)
+
+        result = session.execute(stmt)
         update = result.scalars().first()
         if not update:
             return True
@@ -47,23 +67,47 @@ async def requires_update(api_name: ApiName) -> bool:
     return update_status
 
 
-async def set_updated(api_name: ApiName) -> None:
-    """Set last updated time for a given api"""
-    utcnow = datetime.datetime.utcnow()
-    async with async_session_maker() as session:
-        stmt = select(UpdateStatus).where(UpdateStatus.api_name == api_name)
+def update_table(api_data: List[BaseModel], table: Base):
+    """Update jobs"""
+    with session_maker() as session:
+        existing_records = get_table_content(table, session)
+        if existing_records:
+            for record in existing_records:
+                session.delete(record)
+        for api_item in api_data:
+            # Create a new record if no existing record is found
+            new_record = table(**api_item.__dict__)
+            # Initialize other columns
+            session.add(new_record)
+        # Commit the changes
+        session.commit()
 
-        result = await session.execute(stmt)
-        update = result.scalars().first()
-        if not update:
-            update = UpdateStatus(api_name=api_name, last_updated=utcnow)
-            session.add(update)
-        else:
-            update.last_updated = utcnow
-        await session.commit()
+
+def get_table_content(table: Base, session: Session):
+    """Get table contents"""
+    stmt = select(table)
+    result = session.execute(stmt)
+    if not result:
+        return None
+    table_content = result.scalars().all()
+
+    return table_content
 
 
-async def get_jobs():
+def get_repositories():
+    """Get repositories"""
+    with session_maker() as session:
+        stmt = select(Repositories)
+        result = session.execute(stmt)
+        if not result:
+            return None
+        repos = result.scalars().all()
+
+    return repos
+
+
+### Async functions
+async def async_get_jobs():
     """Get jobs"""
     async with async_session_maker() as session:
         stmt = select(Jobs)
@@ -75,7 +119,7 @@ async def get_jobs():
     return jobs
 
 
-async def get_skills():
+async def async_get_skills():
     """Get skills"""
     async with async_session_maker() as session:
         stmt = select(Skills)
@@ -87,7 +131,7 @@ async def get_skills():
     return skills
 
 
-async def get_books():
+async def async_get_books():
     """Get books"""
     async with async_session_maker() as session:
         stmt = select(Books)
@@ -99,7 +143,7 @@ async def get_books():
     return books
 
 
-async def get_repositories():
+async def async_get_repositories():
     """Get repositories"""
     async with async_session_maker() as session:
         stmt = select(Repositories)
@@ -111,7 +155,7 @@ async def get_repositories():
     return repos
 
 
-async def get_education():
+async def async_get_education():
     """Get education"""
     async with async_session_maker() as session:
         stmt = select(Education)
@@ -121,18 +165,3 @@ async def get_education():
         education = result.scalars().all()
 
     return education
-
-
-async def update_table(api_data: List[BaseModel], table: Base):
-    """Update jobs"""
-    async with async_session_maker() as session:
-        existing_records = await get_repositories()
-        for api_item in api_data:
-            # Create a new record if no existing record is found
-            new_record = table(**api_item.__dict__)
-            # Initialize other columns
-            session.add(new_record)
-        if existing_records:
-            session.delete(existing_records)
-        # Commit the changes
-        await session.commit()

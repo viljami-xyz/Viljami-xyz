@@ -15,7 +15,13 @@ class BookCard(BaseModel):
     author: str
     cover_image: str
     read_state: bool
+    date_added: str
     review: Optional[str] = None
+
+    class Config:
+        """Configure ORM mode"""
+
+        orm_mode = True
 
 
 class RepositoryCard(BaseModel):
@@ -50,12 +56,22 @@ class JobCard(BaseModel):
     start_date: str
     end_date: str
 
+    class Config:
+        """Configure ORM mode"""
+
+        orm_mode = True
+
 
 class SkillCard(BaseModel):
     """Skill model"""
 
     skill: str
     timestamp: str
+
+    class Config:
+        """Configure ORM mode"""
+
+        orm_mode = True
 
 
 class EducationCard(BaseModel):
@@ -65,3 +81,8 @@ class EducationCard(BaseModel):
     degree: str
     start_date: str
     end_date: str
+
+    class Config:
+        """Configure ORM mode"""
+
+        orm_mode = True

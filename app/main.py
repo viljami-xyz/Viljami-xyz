@@ -1,26 +1,30 @@
 """ Main application file """
 
+from celery import Celery
 from fastapi import FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.db.handler import (
+    async_get_books,
+    async_get_repositories,
     create_db_and_tables,
-    get_repositories,
-    requires_update,
     set_updated,
     update_table,
 )
-from app.db.models import ApiName, Repositories
+from app.db.models import ApiName, Books, Repositories
 from app.services.github import get_repository_data
-from app.services.goodreads import GoodReadsBooks
+from app.services.goodreads import fetch_books, nested_books
 from app.services.models import repo_from_orm
 
 templates = Jinja2Templates(directory="app/templates")
 
-books_loader = GoodReadsBooks()
 
 app = FastAPI()
+
+
+celery = Celery("tasks")
+celery.config_from_object("celeryconfig")
 
 app.mount("/app/static", app=StaticFiles(directory="app/static"), name="static")
 
@@ -34,7 +38,7 @@ def home(request: Request):
 @app.get("/projects")
 async def get_projects(request: Request, lang: str = None):
     """print projects"""
-    req_projects = await get_repositories()
+    req_projects = await async_get_repositories()
     req_projects = [repo_from_orm(project) for project in req_projects]
     if lang and lang != "all":
         req_projects = [
@@ -46,19 +50,19 @@ async def get_projects(request: Request, lang: str = None):
 
 
 @app.get("/projects/pre-load")
-async def projects_preload():
+def projects_preload():
     """preload projects"""
-    if await requires_update(ApiName.REPOSITORIES):
-        repos = get_repository_data()
-        await update_table(repos, Repositories)
-        await set_updated(ApiName.REPOSITORIES)
+    # if requires_update(ApiName.REPOSITORIES):
+    #     repos = get_repository_data()
+    #     update_table(repos, Repositories)
+    #     set_updated(ApiName.REPOSITORIES)
     return None
 
 
 @app.get("/projects/first-load")
 async def projects_firstload(request: Request, lang: str = None):
     """print projects"""
-    req_projects = await get_repositories()
+    req_projects = await async_get_repositories()
     req_projects = [repo_from_orm(project) for project in req_projects]
     if lang and lang != "all":
         req_projects = [
@@ -73,14 +77,15 @@ async def projects_firstload(request: Request, lang: str = None):
 @app.get("/books")
 async def get_books(request: Request):
     """print projects"""
-    books = await books_loader.fetch_books()
+    books = await async_get_books()
+    books = nested_books(books)
     return templates.TemplateResponse(
         "books/booksList.html", {"request": request, "books": books}
     )
 
 
 @app.post("/books/show")
-async def show_book(
+def show_book(
     request: Request, book_title: str = Form(...), book_author: str = Form(...)
 ):
     """print projects"""
@@ -91,7 +96,22 @@ async def show_book(
     )
 
 
+@celery.task(name="scheduled_update")
+def update_database():
+    """Update database"""
+    update_table(get_repository_data(), Repositories)
+    update_table(fetch_books(), Books)
+    set_updated(ApiName.REPOSITORIES)
+    set_updated(ApiName.BOOKS)
+
+
+@app.post("/update-db")
+def trigger_update():
+    """Update database"""
+    update_database.delay()
+
+
 @app.on_event("startup")
-async def startup_event():
+def startup_event():
     """Create database and tables"""
-    await create_db_and_tables()
+    create_db_and_tables()
