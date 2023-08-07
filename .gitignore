@@ -21,6 +21,7 @@ env/
 # Logs and databases
 *.log
 *.sqlite3
+*.db
 
 
 # Build files
@@ -37,6 +38,3 @@ celerybeat.pid
 .pytest_cache/
 .coverage
 htmlcov/
-
-# DB
-*.db

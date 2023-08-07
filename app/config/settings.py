@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     sync_db: str
     async_db: str
 
+    linkedin_user: str
+    linkedin_pass: str
+    linkedin_profile: str
+
     class Config:
         """
         Configuration for environment settings

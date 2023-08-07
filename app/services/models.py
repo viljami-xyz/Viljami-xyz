@@ -51,8 +51,12 @@ def repo_from_orm(sql_instance: DeclarativeMeta) -> RepositoryCard:
 class JobCard(BaseModel):
     """Job model"""
 
-    job_title: str
+    title: str
     company: str
+    company_logo: str
+    description: str
+    industries: str | list
+    location: str
     start_date: str
     end_date: str
 
@@ -81,6 +85,7 @@ class EducationCard(BaseModel):
     degree: str
     start_date: str
     end_date: str
+    field: str
 
     class Config:
         """Configure ORM mode"""

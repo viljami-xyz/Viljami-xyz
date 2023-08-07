@@ -75,8 +75,12 @@ class Jobs(Base):
     __tablename__ = "jobs"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    job_title = Column(String, nullable=False)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    location = Column(String, nullable=False)
     company = Column(String, nullable=False)
+    company_logo = Column(String, nullable=False)
+    industry = Column(String, nullable=False)
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
 
@@ -99,5 +103,6 @@ class Education(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     school = Column(String, nullable=False)
     degree = Column(String, nullable=False)
+    field = Column(String, nullable=False)
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
