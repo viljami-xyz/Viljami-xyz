@@ -97,7 +97,7 @@ def show_book(
 
 
 @celery.task(name="scheduled_update")
-def update_database():
+def update_database_task():
     """Update database"""
     update_table(get_repository_data(), Repositories)
     update_table(fetch_books(), Books)
@@ -108,7 +108,7 @@ def update_database():
 @app.post("/update-db")
 def trigger_update():
     """Update database"""
-    update_database.delay()
+    update_database_task.delay()
 
 
 @app.on_event("startup")
