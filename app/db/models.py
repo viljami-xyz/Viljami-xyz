@@ -80,9 +80,9 @@ class Jobs(Base):
     location = Column(String, nullable=False)
     company = Column(String, nullable=False)
     company_logo = Column(String, nullable=False)
-    industry = Column(String, nullable=False)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
+    industries = Column(String, nullable=False)
+    start_date = Column(String, nullable=False)
+    end_date = Column(String, nullable=True)
 
 
 class Skills(Base):
@@ -104,5 +104,5 @@ class Education(Base):
     school = Column(String, nullable=False)
     degree = Column(String, nullable=False)
     field = Column(String, nullable=False)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
+    start_date = Column(String, nullable=False)
+    end_date = Column(String, nullable=False)

@@ -7,14 +7,17 @@ from fastapi.templating import Jinja2Templates
 
 from app.db.handler import (
     async_get_books,
+    async_get_education,
+    async_get_jobs,
     async_get_repositories,
     create_db_and_tables,
     set_updated,
     update_table,
 )
-from app.db.models import ApiName, Books, Repositories
+from app.db.models import ApiName, Books, Education, Jobs, Repositories
 from app.services.github import get_repository_data
 from app.services.goodreads import fetch_books, nested_books
+from app.services.linkedin import modeled_education, modeled_jobs, user_profile
 from app.services.models import repo_from_orm
 
 templates = Jinja2Templates(directory="app/templates")
@@ -96,13 +99,42 @@ def show_book(
     )
 
 
+@app.get("/jobs")
+async def get_jobs(request: Request):
+    """print jobs"""
+    jobs = await async_get_jobs()
+    jobs = modeled_jobs(jobs)
+
+    return templates.TemplateResponse(
+        "jobs/jobCardList.html", {"request": request, "jobs": jobs}
+    )
+
+
+@app.get("/education")
+async def get_education(request: Request):
+    """print jobs"""
+    education = await async_get_education()
+    education = modeled_education(education)
+    return templates.TemplateResponse(
+        "education/educationCardList.html", {"request": request, "education": education}
+    )
+
+
 @celery.task(name="scheduled_update")
 def update_database_task():
     """Update database"""
+
+    # Update tables
     update_table(get_repository_data(), Repositories)
     update_table(fetch_books(), Books)
+    linkedin_profile = user_profile()
+    update_table(linkedin_profile["jobs"], Jobs)
+    update_table(linkedin_profile["education"], Education)
+    # Mark all tables as updated
     set_updated(ApiName.REPOSITORIES)
     set_updated(ApiName.BOOKS)
+    set_updated(ApiName.JOBS)
+    set_updated(ApiName.EDUCATION)
 
 
 @app.post("/update-db")

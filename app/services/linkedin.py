@@ -53,12 +53,22 @@ def create_job_card(job_data: dict) -> JobCard:
     else:
         end_date = "Present"
     return JobCard(
-        job_title=job_data["title"],
+        title=job_data["title"],
         company=job_data["companyName"],
         company_logo=job_data["companyLogoUrl"],
         start_date=start_date,
         end_date=end_date,
         description=job_data["description"],
-        location=job_data["locationName"],
+        location=job_data.get("locationName", "remote"),
         industries=json.dumps(job_data["company"]["industries"]),
     )
+
+
+def modeled_jobs(list_of_jobs) -> List[JobCard]:
+    """Model jobs"""
+    return [JobCard.from_orm(job) for job in list_of_jobs]
+
+
+def modeled_education(list_of_education) -> List[EducationCard]:
+    """Model education"""
+    return [EducationCard.from_orm(school) for school in list_of_education]

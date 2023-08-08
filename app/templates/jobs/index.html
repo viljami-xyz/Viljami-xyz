@@ -1,0 +1,7 @@
+{% block jobs %}
+<div class="flex justify-center" hx-trigger="load" hx-get="/jobs" hx-target="#jobCardList">
+    <div id="jobCardList">
+        {% include "jobs/jobCardList.html" %}
+    </div>
+</div>
+{% endblock %}

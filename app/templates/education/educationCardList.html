@@ -1,0 +1,9 @@
+<div class="flex flex-col">
+    {% for edu in education %}
+    <div class="flex flex-col">
+        <p>{{ edu.field }}, {{ edu.degree }}</p>
+        <h4>{{ edu.school }}</h4>
+        <p>{{ edu.start_date }} - {{ edu.end_date }}</p>
+    </div>
+    {% endfor %}
+</div>
