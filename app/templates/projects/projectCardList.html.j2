@@ -1,6 +1,7 @@
 {% block projectCardList %}
 <div id="projectCardList" class="flex flex-row flex-wrap justify-center w-full mt-2">
-	{% for project in projects %} {% include "projects/projectCard.html" %} {%
-	endfor %}
+	{% for project in projects %}
+	{% include "projects/projectCard.html.j2" %}
+	{% endfor %}
 </div>
 {% endblock %}

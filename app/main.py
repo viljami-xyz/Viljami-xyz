@@ -48,7 +48,8 @@ async def get_projects(request: Request, lang: str = None):
             project for project in req_projects if lang in project.languages.keys()
         ]
     return templates.TemplateResponse(
-        "projects/projectCardList.html", {"request": request, "projects": req_projects}
+        "projects/projectCardList.html.j2",
+        {"request": request, "projects": req_projects},
     )
 
 
@@ -73,7 +74,8 @@ async def projects_firstload(request: Request, lang: str = None):
         ]
 
     return templates.TemplateResponse(
-        "projects/projectCardList.html", {"request": request, "projects": req_projects}
+        "projects/projectCardList.html.j2",
+        {"request": request, "projects": req_projects},
     )
 
 
@@ -83,7 +85,7 @@ async def get_books(request: Request):
     books = await async_get_books()
     books = nested_books(books)
     return templates.TemplateResponse(
-        "books/booksList.html", {"request": request, "books": books}
+        "books/booksList.html.j2", {"request": request, "books": books}
     )
 
 
@@ -106,7 +108,7 @@ async def get_jobs(request: Request):
     jobs = modeled_jobs(jobs)
 
     return templates.TemplateResponse(
-        "jobs/jobCardList.html", {"request": request, "jobs": jobs}
+        "jobs/jobCardList.html.j2", {"request": request, "jobs": jobs}
     )
 
 
@@ -116,7 +118,8 @@ async def get_education(request: Request):
     education = await async_get_education()
     education = modeled_education(education)
     return templates.TemplateResponse(
-        "education/educationCardList.html", {"request": request, "education": education}
+        "education/educationCardList.html.j2",
+        {"request": request, "education": education},
     )
 
 

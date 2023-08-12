@@ -61,4 +61,4 @@ def fetch_books():
 def nested_books(list_of_books) -> List[List[dict]]:
     """Load repositories from file"""
     list_of_books = [BookCard.from_orm(book) for book in list_of_books]
-    return [list_of_books[i : i + 3] for i in range(0, len(list_of_books), 3)]
+    return [list_of_books[i : i + 3] for i in range(0, 21, 3)]

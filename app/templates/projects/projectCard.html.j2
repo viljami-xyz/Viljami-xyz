@@ -1,13 +1,14 @@
 {% block projectCard %}
-<div class="p-3 m-2 flex flex-col items-center justify-center border-white border-2 text-xs 
-	lg:w-auto lg:h-36 
-	md:h-24 md:w-40">
+<div class="bg-stone-900 bg-opacity-50 p-3 m-2 flex flex-col cursor-pointer
+	items-center justify-center text-xs rounded-lg shadow-md
+	lg:w-auto lg:h-28
+	h-10
+	hover:bg-opacity-100 hover:shadow-lg transition duration-300 ease-in-out">
 	<div class="mb-auto hover:underline 
 	lg:text-lg
-	md:text-sm">
+	text-xs">
 		<a href="{{ project.html_url }}" target="_blank">{{ project.name }}</a>
 	</div>
-	<p class="lg:text-sm text-xs">{{ project.tldr }}</p>
 	<p class="text-sm hidden lg:block">Commits: {{project.commits}}</p>
 	<p class="text-sm hidden lg:block">Latest update: {{project.update_time}}</p>
 </div>

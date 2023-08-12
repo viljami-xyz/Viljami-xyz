@@ -16,10 +16,10 @@ settings = Settings()
 saved_repos = pathlib.Path("app/static/repositories.json")
 
 
-owner = "viljami-xyz"
+OWNER = "viljami-xyz"
 access_token = settings.github_api_key
 
-base_url = f"https://api.github.com/repos/{owner}"
+base_url = f"https://api.github.com/repos/{OWNER}"
 
 
 def _make_request(
@@ -46,7 +46,7 @@ def get_repository_data() -> List[RepositoryCard]:
     """Fetch repositories from GitHub"""
 
     list_of_repos = []
-    url = f"https://api.github.com/users/{owner}/repos"
+    url = f"https://api.github.com/users/{OWNER}/repos"
     repos_response = _make_request(method="GET", endpoint="", custom_url=url)
     for repo in repos_response:
         repo = {

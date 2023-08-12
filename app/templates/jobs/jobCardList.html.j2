@@ -1,0 +1,43 @@
+<div class="flex flex-col gap-y-4 " x-data="{ open: false }">
+    {% for job in jobs %}
+    <div class="flex flex-row gap-x-3 bg-stone-900  p-4 rounded-xl
+    hover:bg-opacity-100 hover:shadow-lg transition duration-300 ease-in-out
+    {% if loop.first %}
+    cursor-pointer bg-opacity-50
+    hover:bg-opacity-100
+    active:bg-stone-800 active:bg-opacity-100 active:shadow-lg active:duration-500 active:ease-in-out
+    {% else %}
+    bg-opacity-25
+    {% endif %}
+    " {% if loop.first %} x-on:click="open = ! open" {% else %} x-show.important="open" {% endif %} x-transition>
+        <div class="flex mr-4">
+            <i class="
+                {% if loop.first %} far fa-dot-circle 
+                {% elif loop.last %} fas fa-circle-notch 
+                {% else %} far fa-circle 
+                {% endif %}
+                justify-end text-lg -mr-0.5 mb-1 "></i>
+            {% if not loop.last and not loop.first %}
+            <div class="border-l-4 left-0 border-white mt-7 -mb-5 -ml-2.5 items-center rounded-full">
+            </div>
+            {% elif loop.first %}
+            <div class="border-l-4 left-0 border-white mt-7 -mb-5 -ml-2.5 items-center rounded-full" x-show="open">
+            </div>
+            <div class="border-l-4 left-0 border-white mt-7 mb-2 -ml-2.5 items-center border-dashed rounded-full"
+                x-show="!open">
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            <p class="text-md mb-2">{{ job.title }}</p>
+            <p class="text-sm">{{ job.description }}</p>
+            <p class="text-sm">{{ job.start_date }} to {{ job.end_date }}</p>
+        </div>
+        <div class=" justify-end ml-auto flex ">
+            {% if loop.first %}
+            <img src="{{ job.company_logo }}" alt="{{ job.title }}" class="h-8 min-w-14 rounded-full ">
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>

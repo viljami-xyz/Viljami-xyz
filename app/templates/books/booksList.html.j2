@@ -1,0 +1,29 @@
+<div class="flex flex-wrap md:flex-row  justify-center ">
+    {% for book_nest in books %}
+    <div class="
+        {% if loop.index % 2 == 1 %} mt-auto xl:pt-4 
+        {% else %} mb-auto xl:pb-4 
+        {% endif %}
+        flex lg:flex-row xl:flex-col">
+        {% for book in book_nest %}
+        {% if loop.index < 2 %} <form class="">
+            <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="rounded cursor-pointer flex items-center m-1 
+                hover:delay-75 hover:shadow-slate-300 shadow-md" hx-post="/books/show" hx-target="#bookInfo" ;
+                hx-trigger="mouseenter" />
+            <input type="hidden" name="book_title" value="{{ book.title }}" />
+            <input type="hidden" name="book_author" value="{{ book.author }}" />
+            </form>
+            {% else %}
+            <form class="hidden lg:block">
+                <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="rounded cursor-pointer flex items-center m-1 
+                    hover:delay-75 hover:shadow-slate-300 shadow-md" hx-post="/books/show" hx-target="#bookInfo" ;
+                    hx-trigger="mouseenter" />
+                <input type="hidden" name="book_title" value="{{ book.title }}" />
+                <input type="hidden" name="book_author" value="{{ book.author }}" />
+            </form>
+            {% endif %}
+            {% endfor %}
+    </div>
+
+    {% endfor %}
+</div>
