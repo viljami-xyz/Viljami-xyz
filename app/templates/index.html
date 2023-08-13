@@ -1,16 +1,17 @@
 {% extends "_layout.html" %} {% block home %}
 <div class="flex flex-col h-full items-center" style="font-family: 'Roboto Mono', monospace;">
 	<h1 class="text-3xl mb-5 mt-10">Python Automation Developer</h1>
-	<div class="flex flex-col justify-center items-center w-1/2 mt-8 mb-36">{% include "about.html" %}</div>
+	<div class="flex flex-col justify-center items-center w-1/2 max-w-lg mt-8 mb-36">{% include "about.html" %}</div>
 
 	<h2 class="text-xl mb-5">Experience</h2>
 	<div class="flex flex-col justify-center items-center w-1/2 mb-16">{% include "jobs/index.html" %}</div>
 	<h2 class="text-xl mb-5">Education</h2>
 	<div class="flex flex-col justify-center items-center w-1/2 mb-16">{% include "education/index.html" %}</div>
 	<h2 class="text-xl mb-5">Projects</h2>
-	<div class="flex flex-col justify-center items-center w-1/2 mb-16">{% include "projects/index.html" %}</div>
+	<div class="flex flex-col justify-center items-center w-1/2 max-w-lg  mb-16">{% include "projects/index.html" %}
+	</div>
 	<h2 class="text-xl mb-5">Reading</h2>
-	<div class="flex flex-col justify-center items-center w-1/2 mb-16">{% include "books/index.html" %}</div>
+	<div class="flex flex-col justify-center items-center w-1/2 max-w-lg  mb-16">{% include "books/index.html" %}</div>
 	<h2 class="text-xl mb-5">Links</h2>
 	<div class="flex flex-col justify-center items-center w-1/2 mb-16">{% include "contacts.html" %}</div>
 </div>

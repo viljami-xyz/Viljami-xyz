@@ -1,6 +1,5 @@
 """ Main application file """
 
-from celery import Celery
 from fastapi import FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -11,13 +10,9 @@ from app.db.handler import (
     async_get_jobs,
     async_get_repositories,
     create_db_and_tables,
-    set_updated,
-    update_table,
 )
-from app.db.models import ApiName, Books, Education, Jobs, Repositories
-from app.services.github import get_repository_data
-from app.services.goodreads import fetch_books, nested_books
-from app.services.linkedin import modeled_education, modeled_jobs, user_profile
+from app.services.goodreads import nested_books
+from app.services.linkedin import modeled_education, modeled_jobs
 from app.services.models import repo_from_orm
 
 templates = Jinja2Templates(directory="app/templates")
@@ -25,9 +20,6 @@ templates = Jinja2Templates(directory="app/templates")
 
 app = FastAPI()
 
-
-celery = Celery("tasks")
-celery.config_from_object("celeryconfig")
 
 app.mount("/app/static", app=StaticFiles(directory="app/static"), name="static")
 
@@ -51,16 +43,6 @@ async def get_projects(request: Request, lang: str = None):
         "projects/projectCardList.html.j2",
         {"request": request, "projects": req_projects},
     )
-
-
-@app.get("/projects/pre-load")
-def projects_preload():
-    """preload projects"""
-    # if requires_update(ApiName.REPOSITORIES):
-    #     repos = get_repository_data()
-    #     update_table(repos, Repositories)
-    #     set_updated(ApiName.REPOSITORIES)
-    return None
 
 
 @app.get("/projects/first-load")
@@ -121,29 +103,6 @@ async def get_education(request: Request):
         "education/educationCardList.html.j2",
         {"request": request, "education": education},
     )
-
-
-@celery.task(name="scheduled_update")
-def update_database_task():
-    """Update database"""
-
-    # Update tables
-    update_table(get_repository_data(), Repositories)
-    update_table(fetch_books(), Books)
-    linkedin_profile = user_profile()
-    update_table(linkedin_profile["jobs"], Jobs)
-    update_table(linkedin_profile["education"], Education)
-    # Mark all tables as updated
-    set_updated(ApiName.REPOSITORIES)
-    set_updated(ApiName.BOOKS)
-    set_updated(ApiName.JOBS)
-    set_updated(ApiName.EDUCATION)
-
-
-@app.post("/update-db")
-def trigger_update():
-    """Update database"""
-    update_database_task.delay()
 
 
 @app.on_event("startup")
