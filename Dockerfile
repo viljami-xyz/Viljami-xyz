@@ -14,8 +14,6 @@ RUN chmod 0644 /etc/cron.d/cronjob && crontab /etc/cron.d/cronjob
 
 RUN service cron start
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-COPY ./app ./app
-
-# CMD ["cron", "-f"]
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+COPY ./app /app/app
