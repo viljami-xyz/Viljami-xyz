@@ -1,1 +1,2 @@
-0 4 * * * /bin/bash /app/update_db.sh
+0 4 * * * /bin/bash /app/update_db.sh >> /var/log/cron.log 2>&1
+
