@@ -11,11 +11,10 @@ from app.services.models import EducationCard, JobCard
 settings = Settings()
 LINKEDIN_PROFILE = settings.linkedin_profile
 
-linkedin_api = Linkedin(settings.linkedin_user, settings.linkedin_pass)
-
 
 def user_profile() -> Dict[str, List[str]]:
     """Fetch user profile"""
+    linkedin_api = Linkedin(settings.linkedin_user, settings.linkedin_pass)
     profile = linkedin_api.get_profile(LINKEDIN_PROFILE)
     education = [create_education_card(school) for school in profile["education"]]
     jobs = [create_job_card(job) for job in profile["experience"]]

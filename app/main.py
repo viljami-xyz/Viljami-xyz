@@ -6,14 +6,13 @@ from fastapi.templating import Jinja2Templates
 
 from app.db.handler import (
     async_get_books,
-    # async_get_education,
-    # async_get_jobs,
+    async_get_education,
+    async_get_jobs,
     async_get_repositories,
     create_db_and_tables,
 )
 from app.services.goodreads import nested_books
-
-# from app.services.linkedin import modeled_education, modeled_jobs
+from app.services.linkedin import modeled_education, modeled_jobs
 from app.services.models import repo_from_orm
 
 templates = Jinja2Templates(directory="app/templates")
@@ -87,8 +86,8 @@ def show_book(
 @app.get("/jobs")
 async def get_jobs(request: Request):
     """print jobs"""
-    # jobs = await async_get_jobs()
-    # jobs = modeled_jobs(jobs)
+    jobs = await async_get_jobs()
+    jobs = modeled_jobs(jobs)
 
     return templates.TemplateResponse(
         "jobs/jobCardList.html.j2", {"request": request, "jobs": []}
@@ -98,8 +97,8 @@ async def get_jobs(request: Request):
 @app.get("/education")
 async def get_education(request: Request):
     """print jobs"""
-    # education = await async_get_education()
-    # education = modeled_education(education)
+    education = await async_get_education()
+    education = modeled_education(education)
     return templates.TemplateResponse(
         "education/educationCardList.html.j2",
         {"request": request, "education": []},
