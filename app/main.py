@@ -90,7 +90,7 @@ async def get_jobs(request: Request):
     jobs = modeled_jobs(jobs)
 
     return templates.TemplateResponse(
-        "jobs/jobCardList.html.j2", {"request": request, "jobs": []}
+        "jobs/jobCardList.html.j2", {"request": request, "jobs": jobs}
     )
 
 
@@ -101,7 +101,7 @@ async def get_education(request: Request):
     education = modeled_education(education)
     return templates.TemplateResponse(
         "education/educationCardList.html.j2",
-        {"request": request, "education": []},
+        {"request": request, "education": education},
     )
 
 
