@@ -28,7 +28,7 @@ engine = create_engine(settings.sync_db)
 async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
 session_maker = sessionmaker(engine, expire_on_commit=False)
 
-UPDATE_INTERVAL = datetime.timedelta(handhours=1)
+UPDATE_INTERVAL = datetime.timedelta(hours=1)
 
 
 def create_db_and_tables():
