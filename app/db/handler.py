@@ -28,7 +28,7 @@ engine = create_engine(settings.sync_db)
 async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
 session_maker = sessionmaker(engine, expire_on_commit=False)
 
-UPDATE_INTERVAL = datetime.timedelta(hours=1)
+UPDATE_INTERVAL = datetime.timedelta(handhours=1)
 
 
 def create_db_and_tables():
@@ -71,14 +71,12 @@ def update_table(api_data: List[BaseModel], table: Base):
     """Update jobs"""
     with session_maker() as session:
         existing_records = get_table_content(table, session)
-        if existing_records:
-            for record in existing_records:
-                session.delete(record)
         for api_item in api_data:
             # Create a new record if no existing record is found
             new_record = table(**api_item.__dict__)
             # Initialize other columns
-            session.add(new_record)
+            if new_record not in existing_records:
+                session.add(new_record)
         # Commit the changes
         session.commit()
 
