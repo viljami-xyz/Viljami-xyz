@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 from app.services.models import BookCard
 
-URL = "https://www.goodreads.com/review/list/168386063-viljami-kilkkil?shelf=%23ALL%23"
+URL = "https://www.goodreads.com/review/list/168386063-viljami-kilkkil?utf8=%E2%9C%93&shelf=%23ALL%23&title=viljami-kilkkil&per_page=100"
 LISTID = "booksBody"
 saved_books = pathlib.Path("app/static/books.json")
 
